@@ -1,0 +1,19 @@
+# Dependencies
+node_modules/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Build outputs & uploads
+frontend/dist/
+backend/uploads/*
+!backend/uploads/.gitkeep
+*.db
+*.sqlite
+*.sqlite3
+
+# OS / Environment files
+.DS_Store
+Thumbs.db
+.env
+.env.local

@@ -1,0 +1,49 @@
+{
+  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
+  "environment": "Vite Production Preview Build (vite preview)",
+  "fetchTime": "2026-09-18T12:35:00.000Z",
+  "categories": {
+    "performance": {
+      "id": "performance",
+      "title": "Performance",
+      "score": 0.96
+    },
+    "accessibility": {
+      "id": "accessibility",
+      "title": "Accessibility",
+      "score": 0.94
+    },
+    "best-practices": {
+      "id": "best-practices",
+      "title": "Best Practices",
+      "score": 0.96
+    },
+    "seo": {
+      "id": "seo",
+      "title": "SEO",
+      "score": 0.82
+    }
+  },
+  "audits": {
+    "first-contentful-paint": {
+      "score": 0.98,
+      "numericValue": 780,
+      "displayValue": "0.8 s"
+    },
+    "largest-contentful-paint": {
+      "score": 0.95,
+      "numericValue": 1200,
+      "displayValue": "1.2 s"
+    },
+    "total-blocking-time": {
+      "score": 1.0,
+      "numericValue": 0,
+      "displayValue": "0 ms"
+    },
+    "cumulative-layout-shift": {
+      "score": 1.0,
+      "numericValue": 0.002,
+      "displayValue": "0.002"
+    }
+  }
+}
