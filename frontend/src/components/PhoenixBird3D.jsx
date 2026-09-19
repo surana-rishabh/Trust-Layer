@@ -1,60 +1,109 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 
 export default function PhoenixBird3D({ modelUrl = '/models/phoenix_bird.glb' }) {
   const containerRef = useRef(null);
+  const [hasError, setHasError] = useState(false);
 
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
 
-    const width = container.clientWidth || 320;
-    const height = container.clientHeight || 320;
+    const width = container.clientWidth || 340;
+    const height = container.clientHeight || 340;
 
-    // Scene setup
     const scene = new THREE.Scene();
 
-    // Camera setup
     const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
-    camera.position.set(0, 1.5, 5);
+    camera.position.set(0, 0.5, 4);
 
-    // Renderer
     const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
     renderer.setSize(width, height);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    renderer.shadowMap.enabled = true;
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.2;
     container.appendChild(renderer.domElement);
 
     // Lights
-    const ambientLight = new THREE.AmbientLight(0xffffff, 1.5);
+    const ambientLight = new THREE.AmbientLight(0xffffff, 2.0);
     scene.add(ambientLight);
 
-    const dirLight = new THREE.DirectionalLight(0xffaa00, 3);
-    dirLight.position.set(5, 10, 7);
-    scene.add(dirLight);
+    const mainLight = new THREE.DirectionalLight(0xff7700, 4.0);
+    mainLight.position.set(5, 8, 5);
+    scene.add(mainLight);
 
-    const blueLight = new THREE.PointLight(0x38bdf8, 4, 20);
-    blueLight.position.set(-5, -2, 3);
-    scene.add(blueLight);
+    const rimLight = new THREE.DirectionalLight(0x38bdf8, 3.0);
+    rimLight.position.set(-5, -3, -2);
+    scene.add(rimLight);
 
     let mixer;
     let model;
+    let fallbackMesh;
     let targetRotationX = 0;
     let targetRotationY = 0;
     let targetPosX = 0;
     let targetPosY = 0;
+
+    const createProceduralPhoenixMesh = () => {
+      const group = new THREE.Group();
+
+      // Glowing core body
+      const bodyGeo = new THREE.ConeGeometry(0.5, 1.6, 8);
+      const bodyMat = new THREE.MeshStandardMaterial({
+        color: 0xff6b00,
+        emissive: 0xff3300,
+        emissiveIntensity: 0.8,
+        roughness: 0.2,
+        metalness: 0.5,
+        wireframe: true
+      });
+      const body = new THREE.Mesh(bodyGeo, bodyMat);
+      body.rotation.z = Math.PI;
+      group.add(body);
+
+      // Wings
+      const wingGeo = new THREE.BufferGeometry();
+      const wingVertices = new Float32Array([
+        0, 0.2, 0,
+        -1.8, 0.8, -0.4,
+        -0.8, -0.6, 0,
+
+        0, 0.2, 0,
+        1.8, 0.8, -0.4,
+        0.8, -0.6, 0
+      ]);
+      wingGeo.setAttribute('position', new THREE.BufferAttribute(wingVertices, 3));
+      const wingMat = new THREE.MeshBasicMaterial({
+        color: 0xffaa00,
+        side: THREE.DoubleSide,
+        wireframe: true
+      });
+      const wings = new THREE.Mesh(wingGeo, wingMat);
+      group.add(wings);
+
+      group.position.set(0, 0, 0);
+      return group;
+    };
 
     const loader = new GLTFLoader();
     loader.load(
       modelUrl,
       (gltf) => {
         model = gltf.scene;
-        model.scale.set(0.005, 0.005, 0.005);
-        model.position.set(0, -0.5, 0);
+
+        // Auto-center & fit bounding box
+        const box = new THREE.Box3().setFromObject(model);
+        const center = box.getCenter(new THREE.Vector3());
+        const size = box.getSize(new THREE.Vector3());
+        const maxDim = Math.max(size.x, size.y, size.z);
+        const scale = 2.2 / (maxDim || 1);
+
+        model.scale.set(scale, scale, scale);
+        model.position.sub(center.multiplyScalar(scale));
+
         scene.add(model);
 
-        // Play animations if present
         if (gltf.animations && gltf.animations.length > 0) {
           mixer = new THREE.AnimationMixer(model);
           gltf.animations.forEach((clip) => {
@@ -64,45 +113,45 @@ export default function PhoenixBird3D({ modelUrl = '/models/phoenix_bird.glb' })
         }
       },
       undefined,
-      (err) => {
-        // Fallback procedure if model fails loading
-        console.warn('GLTF Load fallback:', err);
+      () => {
+        setHasError(true);
+        fallbackMesh = createProceduralPhoenixMesh();
+        scene.add(fallbackMesh);
       }
     );
 
-    // Smooth Mouse / Pointer Tracking
     const handleMouseMove = (e) => {
       const rect = container.getBoundingClientRect();
       const x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
       const y = -(((e.clientY - rect.top) / rect.height) * 2 - 1);
 
-      targetRotationY = x * 0.8;
-      targetRotationX = -y * 0.5;
-      targetPosX = x * 0.4;
-      targetPosY = y * 0.3;
+      targetRotationY = x * 0.7;
+      targetRotationX = -y * 0.4;
+      targetPosX = x * 0.3;
+      targetPosY = y * 0.25;
     };
 
     window.addEventListener('mousemove', handleMouseMove);
 
     const clock = new THREE.Clock();
-
     let animId;
+
     const animate = () => {
       animId = requestAnimationFrame(animate);
 
       const delta = clock.getDelta();
       if (mixer) mixer.update(delta);
 
-      if (model) {
-        // Flying bobbing effect
-        const time = clock.getElapsedTime();
-        model.position.y = -0.5 + Math.sin(time * 2) * 0.15 + targetPosY * 0.5;
-        model.position.x += (targetPosX - model.position.x) * 0.05;
+      const activeObject = model || fallbackMesh;
 
-        // Smooth rotation interpolation
-        model.rotation.y += (targetRotationY - model.rotation.y) * 0.05;
-        model.rotation.x += (targetRotationX - model.rotation.x) * 0.05;
-        model.rotation.z = Math.sin(time * 3) * 0.05;
+      if (activeObject) {
+        const time = clock.getElapsedTime();
+        activeObject.position.y = Math.sin(time * 2.5) * 0.12 + targetPosY;
+        activeObject.position.x += (targetPosX - activeObject.position.x) * 0.06;
+
+        activeObject.rotation.y += (targetRotationY - activeObject.rotation.y) * 0.06;
+        activeObject.rotation.x += (targetRotationX - activeObject.rotation.x) * 0.06;
+        activeObject.rotation.z = Math.sin(time * 3.5) * 0.04;
       }
 
       renderer.render(scene, camera);
