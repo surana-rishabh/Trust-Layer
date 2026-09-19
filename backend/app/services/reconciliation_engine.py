@@ -35,31 +35,32 @@ def reconcile_booking(db: Session, booking_id: str) -> Dict[str, Any]:
         elif ev.event_type == "PAYMENT_CONFIRMED":
             payment_event = ev
 
-    # Extract amounts and hashes
-    def parse_payload(ev: Optional[EventLog]) -> Tuple[Optional[int], Optional[str]]:
+    # Extract amounts, currencies, and hashes
+    def parse_payload(ev: Optional[EventLog]) -> Tuple[Optional[int], Optional[str], Optional[str]]:
         if not ev:
-            return None, None
+            return None, None, None
         try:
             p = json.loads(ev.payload)
-            return p.get("amount"), ev.event_hash
+            return p.get("amount"), p.get("currency", "INR"), ev.event_hash
         except Exception:
-            return None, ev.event_hash
+            return None, "INR", ev.event_hash
 
-    q_amt, q_hash = parse_payload(quote_event)
-    b_amt, b_hash = parse_payload(booking_event)
-    p_amt, p_hash = parse_payload(payment_event)
+    q_amt, q_curr, q_hash = parse_payload(quote_event)
+    b_amt, b_curr, b_hash = parse_payload(booking_event)
+    p_amt, p_curr, p_hash = parse_payload(payment_event)
 
     checkpoints = [
-        {"type": "QUOTE", "amount": q_amt, "event_hash": q_hash, "found": quote_event is not None},
-        {"type": "BOOKING", "amount": b_amt, "event_hash": b_hash, "found": booking_event is not None},
-        {"type": "PAYMENT", "amount": p_amt, "event_hash": p_hash, "found": payment_event is not None},
+        {"type": "QUOTE", "amount": q_amt, "currency": q_curr, "event_hash": q_hash, "found": quote_event is not None},
+        {"type": "BOOKING", "amount": b_amt, "currency": b_curr, "event_hash": b_hash, "found": booking_event is not None},
+        {"type": "PAYMENT", "amount": p_amt, "currency": p_curr, "event_hash": p_hash, "found": payment_event is not None},
     ]
 
-    # Compare amounts if checkpoints exist
+    # Compare amounts and currencies if checkpoints exist
     has_mismatch = False
     amounts = [amt for amt in [q_amt, b_amt, p_amt] if amt is not None]
+    currencies = [curr for curr in [q_curr, b_curr, p_curr] if curr is not None]
 
-    if len(amounts) >= 2 and len(set(amounts)) > 1:
+    if len(amounts) >= 2 and (len(set(amounts)) > 1 or len(set(currencies)) > 1):
         has_mismatch = True
 
     if has_mismatch:
