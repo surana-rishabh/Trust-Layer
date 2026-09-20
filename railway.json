@@ -5,7 +5,7 @@
     "dockerfilePath": "backend/Dockerfile"
   },
   "deploy": {
-    "startCommand": "python seed_data/fetch_real_listings.py && uvicorn app.main:app --host 0.0.0.0 --port $PORT",
+    "startCommand": "python seed_data/fetch_real_listings.py && uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8080}",
     "restartPolicyType": "ON_FAILURE",
     "restartPolicyMaxRetries": 10
   }
