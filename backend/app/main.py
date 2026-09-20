@@ -13,20 +13,18 @@ app = FastAPI(title=settings.PROJECT_NAME)
 
 from fastapi.staticfiles import StaticFiles
 
-# Perf Plan 2.4: Enable GZip middleware for response compression
-app.add_middleware(GZipMiddleware, minimum_size=1000)
-
-# Serve uploaded static image files
-app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
-
-# Allow CORS for dev frontend
+# Allow CORS for frontend (wildcard origins with options support)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
-    allow_credentials=True,
+    allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
+    expose_headers=["*"]
 )
+
+# Perf Plan 2.4: Enable GZip middleware for response compression
+app.add_middleware(GZipMiddleware, minimum_size=1000)
 
 app.include_router(event_log.router)
 app.include_router(media.router)
