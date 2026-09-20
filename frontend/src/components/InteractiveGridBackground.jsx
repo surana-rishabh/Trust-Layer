@@ -79,17 +79,42 @@ export default function InteractiveGridBackground() {
   }, []);
 
   return (
-    <canvas
-      ref={canvasRef}
-      style={{
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        width: '100vw',
-        height: '100vh',
-        pointerEvents: 'none',
-        zIndex: 0
-      }}
-    />
+    <>
+      {/* Background Loop Video Layer (if user drops video.mp4 into public/ folder) */}
+      <video
+        autoPlay
+        loop
+        muted
+        playsInline
+        style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: '100vw',
+          height: '100vh',
+          objectFit: 'cover',
+          opacity: 0.18,
+          pointerEvents: 'none',
+          zIndex: 0
+        }}
+        onError={(e) => (e.currentTarget.style.display = 'none')}
+      >
+        <source src="/background.mp4" type="video/mp4" />
+      </video>
+
+      {/* 60fps Interactive Grid Canvas Component in full background */}
+      <canvas
+        ref={canvasRef}
+        style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: '100vw',
+          height: '100vh',
+          pointerEvents: 'none',
+          zIndex: 0
+        }}
+      />
+    </>
   );
 }

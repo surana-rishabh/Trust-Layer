@@ -88,46 +88,61 @@ const ReconciliationView = React.memo(function ReconciliationView({ reconciliati
       {/* Anchoring Section */}
       <div style={{
         display: 'flex',
-        justify: 'space-between',
-        alignItems: 'center',
+        flexDirection: 'column',
+        gap: '0.75rem',
         paddingTop: '0.75rem',
         borderTop: '1px solid #23252a'
       }}>
-        <div style={{ fontSize: '12px', color: '#8a8f98' }}>
-          Tamper-Evident Batch Root Hash Anchoring
-        </div>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <div style={{ fontSize: '12px', color: '#8a8f98' }}>
+            Tamper-Evident Batch Root Hash Anchoring
+          </div>
 
-        <button
-          onClick={onAnchorBatch}
-          style={{
-            padding: '5px 12px',
-            backgroundColor: '#5e6ad2',
-            color: '#ffffff',
-            border: 'none',
-            borderRadius: '6px',
-            fontSize: '13px',
-            fontWeight: '500',
-            cursor: 'pointer'
-          }}
-        >
-          Anchor Batch
-        </button>
+          <button
+            onClick={onAnchorBatch}
+            style={{
+              padding: '6px 14px',
+              backgroundColor: '#5e6ad2',
+              color: '#ffffff',
+              border: 'none',
+              borderRadius: '6px',
+              fontSize: '13px',
+              fontWeight: '500',
+              cursor: 'pointer'
+            }}
+          >
+            Anchor Batch Root Hash
+          </button>
+        </div>
       </div>
 
       {anchorResult && (
         <div style={{
           marginTop: '0.75rem',
-          padding: '0.75rem',
+          padding: '0.875rem',
           backgroundColor: '#0f1011',
           borderRadius: '8px',
           border: '1px solid #23252a',
           fontSize: '12px',
           fontFamily: 'monospace'
         }}>
-          <div>Root Hash: {anchorResult.root_hash}</div>
-          {anchorResult.explorer_url && (
-            <div style={{ marginTop: '0.25rem' }}>
-              Explorer: <a href={anchorResult.explorer_url} target="_blank" rel="noopener noreferrer" style={{ color: '#5e6ad2' }}>{anchorResult.tx_hash}</a>
+          <div style={{ color: '#27a644', fontWeight: '600', marginBottom: '0.3rem' }}>
+            ✓ Batch Merkle Root Hash Anchored ({anchorResult.network || 'Polygon Amoy'})
+          </div>
+          <div style={{ color: '#d0d6e0', wordBreak: 'break-all' }}>
+            <strong>SHA-256 Root:</strong> {anchorResult.root_hash}
+          </div>
+          {anchorResult.tx_hash && (
+            <div style={{ marginTop: '0.4rem', wordBreak: 'break-all' }}>
+              <strong>Transaction Hash:</strong>{' '}
+              <a
+                href={anchorResult.explorer_url}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ color: '#5e6ad2', textDecoration: 'underline' }}
+              >
+                {anchorResult.tx_hash} 🔗
+              </a>
             </div>
           )}
         </div>
