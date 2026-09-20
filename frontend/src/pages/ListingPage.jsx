@@ -151,38 +151,42 @@ export default function ListingPage({ listingId = 'WY-0921' }) {
           gap: '1rem',
           marginBottom: '1.5rem'
         }}>
-          {media.map((item, idx) => (
-            <div key={idx} style={{
-              backgroundColor: '#0f1011',
-              borderRadius: '12px',
-              border: '1px solid #23252a',
-              overflow: 'hidden',
-              height: '160px',
-              position: 'relative'
-            }}>
-              <img
-                src={item.file_path.startsWith('/') ? item.file_path : `/${item.file_path}`}
-                alt="Listing media"
-                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                onError={(e) => {
-                  e.currentTarget.style.display = 'none';
-                  e.currentTarget.nextSibling.style.display = 'flex';
-                }}
-              />
-              <div style={{
-                display: 'none',
-                width: '100%',
-                height: '100%',
-                alignItems: 'center',
-                justify: 'center',
-                backgroundColor: '#141516',
-                color: '#8a8f98',
-                fontSize: '13px'
+          {media.map((item, idx) => {
+            const mediaUrl = item.file_path || item.image_path || '';
+            const srcUrl = mediaUrl ? (mediaUrl.startsWith('/') ? mediaUrl : `/${mediaUrl}`) : '';
+            return (
+              <div key={idx} style={{
+                backgroundColor: '#0f1011',
+                borderRadius: '12px',
+                border: '1px solid #23252a',
+                overflow: 'hidden',
+                height: '160px',
+                position: 'relative'
               }}>
-                📷 Media Specimen #{idx + 1}
+                <img
+                  src={srcUrl}
+                  alt="Listing media"
+                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                  onError={(e) => {
+                    e.currentTarget.style.display = 'none';
+                    e.currentTarget.nextSibling.style.display = 'flex';
+                  }}
+                />
+                <div style={{
+                  display: 'none',
+                  width: '100%',
+                  height: '100%',
+                  alignItems: 'center',
+                  justify: 'center',
+                  backgroundColor: '#141516',
+                  color: '#8a8f98',
+                  fontSize: '13px'
+                }}>
+                  📷 Media Specimen #{idx + 1}
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       )}
 

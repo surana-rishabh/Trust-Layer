@@ -43,7 +43,19 @@ async def upload_media(
 def get_listing_media(listing_id: str, db: Session = Depends(get_db)):
     """Retrieves all media assets associated with a given listing."""
     assets = db.query(MediaAsset).filter(MediaAsset.listing_id == listing_id).all()
-    return assets
+    return [
+        {
+            "id": a.id,
+            "listing_id": a.listing_id,
+            "filename": a.filename,
+            "image_path": a.image_path,
+            "file_path": a.image_path,
+            "exact_hash": a.exact_hash,
+            "phash": a.phash,
+            "uploaded_at": a.uploaded_at
+        }
+        for a in assets
+    ]
 
 @router.get("/assets/{asset_id}/file")
 def get_media_file(asset_id: int, db: Session = Depends(get_db)):
