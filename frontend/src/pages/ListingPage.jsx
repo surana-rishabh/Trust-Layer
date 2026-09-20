@@ -152,24 +152,29 @@ export default function ListingPage({ listingId = 'WY-0921' }) {
           marginBottom: '1.5rem'
         }}>
           {media.map((item, idx) => {
-            const mediaUrl = item.file_path || item.image_path || '';
-            const srcUrl = mediaUrl ? (mediaUrl.startsWith('/') ? mediaUrl : `/${mediaUrl}`) : '';
+            const rawPath = item.file_path || item.image_path || '';
+            const cleanPath = rawPath.replace(/\\/g, '/');
+            const srcUrl = item.id
+              ? `/api/media/assets/${item.id}/file`
+              : (cleanPath.startsWith('/') ? cleanPath : `/${cleanPath}`);
             return (
               <div key={idx} style={{
                 backgroundColor: '#0f1011',
                 borderRadius: '12px',
                 border: '1px solid #23252a',
                 overflow: 'hidden',
-                height: '160px',
+                height: '180px',
                 position: 'relative'
               }}>
                 <img
                   src={srcUrl}
-                  alt="Listing media"
+                  alt={`Specimen ${idx + 1}`}
                   style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                   onError={(e) => {
                     e.currentTarget.style.display = 'none';
-                    e.currentTarget.nextSibling.style.display = 'flex';
+                    if (e.currentTarget.nextSibling) {
+                      e.currentTarget.nextSibling.style.display = 'flex';
+                    }
                   }}
                 />
                 <div style={{
@@ -182,7 +187,7 @@ export default function ListingPage({ listingId = 'WY-0921' }) {
                   color: '#8a8f98',
                   fontSize: '13px'
                 }}>
-                  📷 Media Specimen #{idx + 1}
+                  📷 Property Photo Specimen #{idx + 1}
                 </div>
               </div>
             );
