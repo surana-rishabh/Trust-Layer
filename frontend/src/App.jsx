@@ -2,6 +2,8 @@ import React, { useState, Suspense, lazy } from 'react';
 import Navbar from './components/Navbar';
 import HeroBanner from './components/HeroBanner';
 import FeeCalculator from './components/FeeCalculator';
+import InteractiveGridBackground from './components/InteractiveGridBackground';
+import DemoGuideBanner from './components/DemoGuideBanner';
 
 const ListingPage = lazy(() => import('./pages/ListingPage'));
 const HostUploadPage = lazy(() => import('./pages/HostUploadPage'));
@@ -16,14 +18,21 @@ export default function App() {
       minHeight: '100vh',
       color: '#f7f8f8',
       fontFamily: "Linear Text, SF Pro Text, Inter, -apple-system, sans-serif",
-      WebkitFontSmoothing: 'antialiased'
+      WebkitFontSmoothing: 'antialiased',
+      position: 'relative'
     }}>
-      {/* Clean Linear-grade Navigation Header */}
+      {/* 60fps Interactive Grid Canvas Component in full background */}
+      <InteractiveGridBackground />
+
+      {/* Navigation Bar */}
       <Navbar activeTab={activeTab} setActiveTab={setActiveTab} />
 
-      {/* Hero Section */}
-      <div style={{ maxWidth: '1280px', margin: '2rem auto 0 auto', padding: '0 2rem' }}>
+      {/* Hero & Workspace Container */}
+      <div style={{ maxWidth: '1280px', margin: '2rem auto 0 auto', padding: '0 2rem', position: 'relative', zIndex: 1 }}>
         <HeroBanner onSelectTab={setActiveTab} />
+
+        {/* Dedicated Judge Walkthrough & Proof of Concept Step Guide */}
+        <DemoGuideBanner activeStep={activeTab} setStep={setActiveTab} />
 
         {/* Commission Arbitrage Fee Comparison Calculator */}
         <FeeCalculator />
