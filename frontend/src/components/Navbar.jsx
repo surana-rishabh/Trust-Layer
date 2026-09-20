@@ -19,20 +19,16 @@ export default function Navbar({ activeTab, setActiveTab }) {
           onClick={() => setActiveTab('WY-0921')}
           style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', cursor: 'pointer' }}
         >
-          <div style={{
-            width: '24px',
-            height: '24px',
-            borderRadius: '6px',
-            backgroundColor: '#5e6ad2',
-            display: 'flex',
-            alignItems: 'center',
-            justify: 'center',
-            color: '#ffffff',
-            fontWeight: '700',
-            fontSize: '12px'
-          }}>
-            T
-          </div>
+          <img
+            src="/logo.png"
+            alt="TrustLayer Logo"
+            style={{
+              width: '28px',
+              height: '28px',
+              borderRadius: '6px',
+              objectFit: 'contain'
+            }}
+          />
           <span style={{ fontSize: '15px', fontWeight: '600', color: '#f7f8f8', letterSpacing: '-0.3px', fontFamily: 'Inter, sans-serif' }}>
             TrustLayer <span style={{ color: '#8a8f98', fontWeight: '400' }}>for Wayzyy</span>
           </span>
