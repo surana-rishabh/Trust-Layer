@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {
+  BASE_URL,
   getListing,
   getListingMedia,
   getEvidenceStatus,
@@ -157,7 +158,7 @@ export default function ListingPage({ listingId = 'WY-0921' }) {
             const rawPath = item.file_path || item.image_path || '';
             const cleanPath = rawPath.replace(/\\/g, '/');
             const srcUrl = item.id
-              ? `/api/media/assets/${item.id}/file`
+              ? `${BASE_URL}/media/assets/${item.id}/file`
               : (cleanPath.startsWith('/') ? cleanPath : `/${cleanPath}`);
             return (
               <div key={idx} style={{

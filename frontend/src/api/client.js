@@ -1,4 +1,6 @@
-const BASE_URL = '/api';
+export const BASE_URL = import.meta.env.VITE_API_URL
+  ? (import.meta.env.VITE_API_URL.endsWith('/api') ? import.meta.env.VITE_API_URL : `${import.meta.env.VITE_API_URL}/api`)
+  : '/api';
 
 export async function fetchHealth() {
   const res = await fetch('/health');
