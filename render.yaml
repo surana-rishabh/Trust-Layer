@@ -1,0 +1,24 @@
+services:
+  # Backend API Service (FastAPI)
+  - type: web
+    name: trustlayer-backend
+    env: python
+    buildCommand: "pip install -r requirements.txt && python seed_data/fetch_real_listings.py"
+    startCommand: "uvicorn app.main:app --host 0.0.0.0 --port $PORT"
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.16
+      - key: AMOY_RPC_URL
+        value: https://rpc-amoy.polygon.technology
+      - key: WALLET_PRIVATE_KEY
+        sync: false
+
+  # Frontend Static Web App (Vite + React)
+  - type: static
+    name: trustlayer-frontend
+    buildCommand: "npm run build"
+    staticPublishPath: "./dist"
+    routes:
+      - type: rewrite
+        source: "/*"
+        destination: "/index.html"
