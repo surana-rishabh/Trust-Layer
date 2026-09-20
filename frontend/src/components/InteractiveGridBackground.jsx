@@ -80,7 +80,7 @@ export default function InteractiveGridBackground() {
 
   return (
     <>
-      {/* Background Loop Video Layer (if user drops video.mp4 into public/ folder) */}
+      {/* Background Loop Video Layer */}
       <video
         autoPlay
         loop
@@ -93,7 +93,7 @@ export default function InteractiveGridBackground() {
           width: '100vw',
           height: '100vh',
           objectFit: 'cover',
-          opacity: 0.18,
+          opacity: 0.45,
           pointerEvents: 'none',
           zIndex: 0
         }}
