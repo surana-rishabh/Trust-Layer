@@ -11,9 +11,11 @@ export default function FeeCalculator() {
 
   return (
     <div style={{
-      backgroundColor: '#0f1011',
+      backgroundColor: 'rgba(15, 16, 17, 0.75)',
+      backdropFilter: 'blur(16px)',
+      WebkitBackdropFilter: 'blur(16px)',
       borderRadius: '16px',
-      border: '1px solid #23252a',
+      border: '1px solid rgba(255, 255, 255, 0.08)',
       padding: '2rem 2.5rem',
       marginBottom: '2rem',
       color: '#f7f8f8'

@@ -96,9 +96,11 @@ export default function ListingPage({ listingId = 'WY-0921' }) {
     <div style={{ color: '#f7f8f8', fontFamily: "Inter, system-ui, sans-serif" }}>
       {/* Header Container */}
       <div style={{
-        backgroundColor: '#0f1011',
+        backgroundColor: 'rgba(15, 16, 17, 0.75)',
+        backdropFilter: 'blur(16px)',
+        WebkitBackdropFilter: 'blur(16px)',
         borderRadius: '16px',
-        border: '1px solid #23252a',
+        border: '1px solid rgba(255, 255, 255, 0.08)',
         padding: '2rem',
         marginBottom: '1.5rem',
         display: 'flex',

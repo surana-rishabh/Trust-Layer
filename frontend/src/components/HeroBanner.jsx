@@ -6,8 +6,10 @@ export default function HeroBanner({ onSelectTab }) {
       position: 'relative',
       overflow: 'hidden',
       borderRadius: '16px',
-      backgroundColor: '#0f1011',
-      border: '1px solid #23252a',
+      backgroundColor: 'rgba(15, 16, 17, 0.75)',
+      backdropFilter: 'blur(16px)',
+      WebkitBackdropFilter: 'blur(16px)',
+      border: '1px solid rgba(255, 255, 255, 0.08)',
       padding: '3.5rem 3rem',
       marginBottom: '2rem',
       boxShadow: '0 20px 40px rgba(0, 0, 0, 0.6)'
