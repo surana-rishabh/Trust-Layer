@@ -11,8 +11,13 @@ Base.metadata.create_all(bind=engine)
 
 app = FastAPI(title=settings.PROJECT_NAME)
 
+from fastapi.staticfiles import StaticFiles
+
 # Perf Plan 2.4: Enable GZip middleware for response compression
 app.add_middleware(GZipMiddleware, minimum_size=1000)
+
+# Serve uploaded static image files
+app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
 
 # Allow CORS for dev frontend
 app.add_middleware(

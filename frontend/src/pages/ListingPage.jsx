@@ -161,7 +161,7 @@ export default function ListingPage({ listingId = 'WY-0921' }) {
               position: 'relative'
             }}>
               <img
-                src={`http://localhost:8000${item.file_path}`}
+                src={item.file_path.startsWith('/') ? item.file_path : `/${item.file_path}`}
                 alt="Listing media"
                 style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                 onError={(e) => {
