@@ -1,6 +1,12 @@
-export const BASE_URL = import.meta.env.VITE_API_URL
-  ? (import.meta.env.VITE_API_URL.endsWith('/api') ? import.meta.env.VITE_API_URL : `${import.meta.env.VITE_API_URL}/api`)
-  : '/api';
+export const BASE_URL = (() => {
+  const envUrl = import.meta.env.VITE_API_URL;
+  if (!envUrl) return '/api';
+  let formatted = envUrl.trim();
+  if (!formatted.startsWith('http://') && !formatted.startsWith('https://')) {
+    formatted = `https://${formatted}`;
+  }
+  return formatted.endsWith('/api') ? formatted : `${formatted}/api`;
+})();
 
 export async function fetchHealth() {
   const res = await fetch('/health');
