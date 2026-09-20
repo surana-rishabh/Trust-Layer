@@ -1,147 +1,148 @@
 import React from 'react';
 
-export default function Navbar({ activeTab, onSelectTab }) {
+export default function Navbar({ activeTab, setActiveTab }) {
   return (
     <header style={{
       position: 'sticky',
       top: 0,
       zIndex: 100,
-      backgroundColor: 'rgba(9, 13, 22, 0.85)',
-      backdropFilter: 'blur(16px)',
-      borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
-      padding: '0.875rem 1.75rem'
+      backgroundColor: '#010102',
+      borderBottom: '1px solid #23252a',
+      padding: '0 2rem',
+      height: '56px',
+      display: 'flex',
+      alignItems: 'center'
     }}>
-      <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
-        {/* Brand Logo */}
+      <div style={{ width: '100%', maxWidth: '1280px', margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        {/* Brand Mark */}
         <div
-          onClick={() => onSelectTab('WY-0921')}
+          onClick={() => setActiveTab('WY-0921')}
           style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', cursor: 'pointer' }}
         >
           <div style={{
-            width: '40px',
-            height: '40px',
-            borderRadius: '50%',
-            backgroundColor: '#ff6b00',
+            width: '24px',
+            height: '24px',
+            borderRadius: '6px',
+            backgroundColor: '#5e6ad2',
             display: 'flex',
             alignItems: 'center',
-            justifyContent: 'center',
-            fontSize: '1.25rem',
-            boxShadow: '0 0 15px rgba(255, 107, 0, 0.5)'
+            justify: 'center',
+            color: '#ffffff',
+            fontWeight: '700',
+            fontSize: '12px'
           }}>
-            🛡️
+            T
           </div>
-          <div>
-            <span style={{ fontSize: '1.2rem', fontWeight: '800', color: '#ffffff', letterSpacing: '-0.02em' }}>
-              Wayzyy <span style={{ color: '#ff6b00' }}>+ TrustLayer</span>
-            </span>
-            <div style={{ fontSize: '0.725rem', color: '#94a3b8' }}>Zero-Commission Stays · Cryptographic Audit Engine</div>
-          </div>
+          <span style={{ fontSize: '15px', fontWeight: '600', color: '#f7f8f8', letterSpacing: '-0.3px', fontFamily: 'Inter, sans-serif' }}>
+            TrustLayer <span style={{ color: '#8a8f98', fontWeight: '400' }}>for Wayzyy</span>
+          </span>
         </div>
 
-        {/* Navigation Tabs & Platform Selection */}
-        <nav style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', alignItems: 'center' }}>
+        {/* Linear Style Tab Switcher */}
+        <nav style={{ display: 'flex', gap: '4px', backgroundColor: '#0f1011', padding: '3px', borderRadius: '8px', border: '1px solid #23252a' }}>
           <button
-            onClick={() => onSelectTab('WY-0921')}
+            onClick={() => setActiveTab('WY-0921')}
             style={{
-              padding: '7px 14px',
-              borderRadius: '20px',
+              padding: '5px 12px',
+              borderRadius: '6px',
               border: 'none',
-              fontSize: '0.825rem',
-              fontWeight: '600',
+              fontSize: '13px',
+              fontWeight: '500',
               cursor: 'pointer',
-              backgroundColor: activeTab === 'WY-0921' ? '#ff6b00' : 'rgba(255, 255, 255, 0.06)',
-              color: activeTab === 'WY-0921' ? '#ffffff' : '#cbd5e1',
-              transition: 'all 0.2s ease'
+              backgroundColor: activeTab === 'WY-0921' ? '#141516' : 'transparent',
+              color: activeTab === 'WY-0921' ? '#f7f8f8' : '#8a8f98',
+              transition: 'all 0.15s ease'
             }}
           >
-            Wayzyy (#WY-0921)
+            Wayzyy #WY-0921
           </button>
 
           <button
-            onClick={() => onSelectTab('WY-1044')}
+            onClick={() => setActiveTab('WY-1044')}
             style={{
-              padding: '7px 14px',
-              borderRadius: '20px',
+              padding: '5px 12px',
+              borderRadius: '6px',
               border: 'none',
-              fontSize: '0.825rem',
-              fontWeight: '600',
+              fontSize: '13px',
+              fontWeight: '500',
               cursor: 'pointer',
-              backgroundColor: activeTab === 'WY-1044' ? '#ff6b00' : 'rgba(255, 255, 255, 0.06)',
-              color: activeTab === 'WY-1044' ? '#ffffff' : '#cbd5e1',
-              transition: 'all 0.2s ease'
+              backgroundColor: activeTab === 'WY-1044' ? '#141516' : 'transparent',
+              color: activeTab === 'WY-1044' ? '#f7f8f8' : '#8a8f98',
+              transition: 'all 0.15s ease'
             }}
           >
-            Wayzyy (#WY-1044)
+            Wayzyy #WY-1044
           </button>
 
           <button
-            onClick={() => onSelectTab('OYO-4012')}
+            onClick={() => setActiveTab('OYO-4012')}
             style={{
-              padding: '7px 14px',
-              borderRadius: '20px',
+              padding: '5px 12px',
+              borderRadius: '6px',
               border: 'none',
-              fontSize: '0.825rem',
-              fontWeight: '600',
+              fontSize: '13px',
+              fontWeight: '500',
               cursor: 'pointer',
-              backgroundColor: activeTab === 'OYO-4012' ? '#ef4444' : 'rgba(255, 255, 255, 0.06)',
-              color: activeTab === 'OYO-4012' ? '#ffffff' : '#cbd5e1',
-              transition: 'all 0.2s ease'
+              backgroundColor: activeTab === 'OYO-4012' ? '#141516' : 'transparent',
+              color: activeTab === 'OYO-4012' ? '#f7f8f8' : '#8a8f98',
+              transition: 'all 0.15s ease'
             }}
           >
-            OYO Rooms (#OYO-4012)
+            OYO #OYO-4012
           </button>
 
           <button
-            onClick={() => onSelectTab('MMT-7701')}
+            onClick={() => setActiveTab('MMT-7701')}
             style={{
-              padding: '7px 14px',
-              borderRadius: '20px',
+              padding: '5px 12px',
+              borderRadius: '6px',
               border: 'none',
-              fontSize: '0.825rem',
-              fontWeight: '600',
+              fontSize: '13px',
+              fontWeight: '500',
               cursor: 'pointer',
-              backgroundColor: activeTab === 'MMT-7701' ? '#10b981' : 'rgba(255, 255, 255, 0.06)',
-              color: activeTab === 'MMT-7701' ? '#ffffff' : '#cbd5e1',
-              transition: 'all 0.2s ease'
+              backgroundColor: activeTab === 'MMT-7701' ? '#141516' : 'transparent',
+              color: activeTab === 'MMT-7701' ? '#f7f8f8' : '#8a8f98',
+              transition: 'all 0.15s ease'
             }}
           >
-            MakeMyTrip (#MMT-7701)
-          </button>
-
-          <div style={{ width: '1px', height: '20px', backgroundColor: 'rgba(255, 255, 255, 0.15)', margin: '0 4px' }} />
-
-          <button
-            onClick={() => onSelectTab('host-upload')}
-            style={{
-              padding: '7px 14px',
-              borderRadius: '20px',
-              border: 'none',
-              fontSize: '0.825rem',
-              fontWeight: '600',
-              cursor: 'pointer',
-              backgroundColor: activeTab === 'host-upload' ? '#0f766e' : 'rgba(255, 255, 255, 0.06)',
-              color: activeTab === 'host-upload' ? '#ffffff' : '#cbd5e1'
-            }}
-          >
-            Story A: Media Upload
-          </button>
-
-          <button
-            onClick={() => onSelectTab('reviewer')}
-            style={{
-              padding: '7px 14px',
-              borderRadius: '20px',
-              border: 'none',
-              fontSize: '0.825rem',
-              fontWeight: '600',
-              cursor: 'pointer',
-              backgroundColor: activeTab === 'reviewer' ? '#8b5cf6' : 'rgba(255, 255, 255, 0.06)',
-              color: activeTab === 'reviewer' ? '#ffffff' : '#cbd5e1'
-            }}
-          >
-            Reviewer Dashboard
+            MMT #MMT-7701
           </button>
         </nav>
+
+        {/* Secondary Action Controls */}
+        <div style={{ display: 'flex', gap: '8px' }}>
+          <button
+            onClick={() => setActiveTab('host-upload')}
+            style={{
+              padding: '6px 12px',
+              borderRadius: '6px',
+              backgroundColor: activeTab === 'host-upload' ? '#141516' : 'transparent',
+              color: activeTab === 'host-upload' ? '#f7f8f8' : '#8a8f98',
+              border: '1px solid #23252a',
+              fontSize: '13px',
+              fontWeight: '500',
+              cursor: 'pointer'
+            }}
+          >
+            Host Upload
+          </button>
+
+          <button
+            onClick={() => setActiveTab('reviewer')}
+            style={{
+              padding: '6px 12px',
+              borderRadius: '6px',
+              backgroundColor: activeTab === 'reviewer' ? '#5e6ad2' : '#141516',
+              color: '#ffffff',
+              border: 'none',
+              fontSize: '13px',
+              fontWeight: '500',
+              cursor: 'pointer'
+            }}
+          >
+            Reviewer Console
+          </button>
+        </div>
       </div>
     </header>
   );

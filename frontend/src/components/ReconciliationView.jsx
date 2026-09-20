@@ -7,51 +7,51 @@ const ReconciliationView = React.memo(function ReconciliationView({ reconciliati
 
   return (
     <div style={{
-      padding: '1.25rem',
-      borderRadius: '8px',
-      backgroundColor: mismatch_detected ? '#fff1f2' : '#f0fdf4',
-      border: `1px solid ${mismatch_detected ? '#fecdd3' : '#bbf7d0'}`,
-      margin: '1rem 0'
+      padding: '1.25rem 1.5rem',
+      borderRadius: '12px',
+      backgroundColor: mismatch_detected ? 'rgba(239, 68, 68, 0.05)' : 'rgba(39, 166, 68, 0.05)',
+      border: `1px solid ${mismatch_detected ? 'rgba(239, 68, 68, 0.25)' : 'rgba(39, 166, 68, 0.25)'}`,
+      marginBottom: '1.5rem',
+      color: '#f7f8f8'
     }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-          <span style={{ fontSize: '1.25rem' }}>{mismatch_detected ? '⚠️' : '✅'}</span>
-          <h3 style={{ margin: 0, fontSize: '1.05rem', color: mismatch_detected ? '#9f1239' : '#166534' }}>
-            {mismatch_detected ? 'Reconciliation Flag Raised: Transaction Inconsistency' : 'Reconciliation Verified'}
+          <h3 style={{ margin: 0, fontSize: '15px', fontWeight: '600', color: mismatch_detected ? '#f87171' : '#4ade80' }}>
+            {mismatch_detected ? 'Reconciliation Discrepancy Flagged' : 'Reconciliation Verified Clean'}
           </h3>
         </div>
         <span style={{
-          padding: '4px 10px',
-          borderRadius: '12px',
-          fontSize: '0.775rem',
-          fontWeight: '600',
-          backgroundColor: mismatch_detected ? '#ffe4e6' : '#dcfce7',
-          color: mismatch_detected ? '#9f1239' : '#15803d'
+          padding: '2px 8px',
+          borderRadius: '9999px',
+          fontSize: '12px',
+          fontWeight: '500',
+          backgroundColor: mismatch_detected ? 'rgba(239, 68, 68, 0.15)' : 'rgba(39, 166, 68, 0.15)',
+          color: mismatch_detected ? '#f87171' : '#4ade80'
         }}>
           {status}
         </span>
       </div>
 
-      <p style={{ margin: '0 0 1rem 0', fontSize: '0.875rem', color: mismatch_detected ? '#881337' : '#166534' }}>
+      <p style={{ margin: '0 0 1rem 0', fontSize: '13px', color: '#8a8f98' }}>
         {message}
       </p>
 
-      {/* Checkpoint breakdown */}
+      {/* Checkpoints table */}
       {checkpoints && checkpoints.length > 0 && (
         <div style={{
-          backgroundColor: '#ffffff',
-          borderRadius: '6px',
-          border: '1px solid #e5e7eb',
+          backgroundColor: '#0f1011',
+          borderRadius: '8px',
+          border: '1px solid #23252a',
           overflow: 'hidden',
           marginBottom: '1rem'
         }}>
-          <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.85rem' }}>
+          <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '13px' }}>
             <thead>
-              <tr style={{ backgroundColor: '#f9fafb', borderBottom: '1px solid #e5e7eb', textAlign: 'left' }}>
-                <th style={{ padding: '8px 12px' }}>Event Source</th>
-                <th style={{ padding: '8px 12px' }}>Amount</th>
-                <th style={{ padding: '8px 12px' }}>SHA-256 Event Hash</th>
-                <th style={{ padding: '8px 12px' }}>Status</th>
+              <tr style={{ borderBottom: '1px solid #23252a', textAlign: 'left', color: '#8a8f98' }}>
+                <th style={{ padding: '8px 12px', fontWeight: '500' }}>Event Source</th>
+                <th style={{ padding: '8px 12px', fontWeight: '500' }}>Amount</th>
+                <th style={{ padding: '8px 12px', fontWeight: '500' }}>SHA-256 Hash</th>
+                <th style={{ padding: '8px 12px', fontWeight: '500' }}>Status</th>
               </tr>
             </thead>
             <tbody>
@@ -59,23 +59,22 @@ const ReconciliationView = React.memo(function ReconciliationView({ reconciliati
                 const isDiscrepancy = mismatch_detected && cp.type === 'PAYMENT';
                 return (
                   <tr key={idx} style={{
-                    borderBottom: idx < checkpoints.length - 1 ? '1px solid #f3f4f6' : 'none',
-                    backgroundColor: isDiscrepancy ? '#fff1f2' : 'transparent'
+                    borderBottom: idx < checkpoints.length - 1 ? '1px solid #141516' : 'none'
                   }}>
-                    <td style={{ padding: '8px 12px', fontWeight: '600' }}>{cp.type}</td>
-                    <td style={{ padding: '8px 12px', fontWeight: '700', color: isDiscrepancy ? '#e11d48' : '#111827' }}>
+                    <td style={{ padding: '8px 12px', fontWeight: '500', color: '#f7f8f8' }}>{cp.type}</td>
+                    <td style={{ padding: '8px 12px', fontFamily: 'monospace', color: isDiscrepancy ? '#f87171' : '#f7f8f8' }}>
                       {cp.amount !== null ? `₹${cp.amount.toLocaleString()}` : 'Pending'}
                     </td>
-                    <td style={{ padding: '8px 12px', fontFamily: 'monospace', fontSize: '0.775rem', color: '#6b7280' }}>
+                    <td style={{ padding: '8px 12px', fontFamily: 'monospace', fontSize: '12px', color: '#8a8f98' }}>
                       {cp.event_hash ? cp.event_hash.slice(0, 16) + '...' : 'N/A'}
                     </td>
                     <td style={{ padding: '8px 12px' }}>
                       {cp.found ? (
-                        <span style={{ color: isDiscrepancy ? '#e11d48' : '#16a34a', fontWeight: '600' }}>
+                        <span style={{ color: isDiscrepancy ? '#f87171' : '#27a644', fontWeight: '500' }}>
                           {isDiscrepancy ? 'Mismatched' : 'Verified'}
                         </span>
                       ) : (
-                        <span style={{ color: '#9ca3af' }}>Waiting</span>
+                        <span style={{ color: '#62666d' }}>Waiting</span>
                       )}
                     </td>
                   </tr>
@@ -86,32 +85,32 @@ const ReconciliationView = React.memo(function ReconciliationView({ reconciliati
         </div>
       )}
 
-      {/* Blockchain Anchoring Section */}
+      {/* Anchoring Section */}
       <div style={{
         display: 'flex',
         justify: 'space-between',
         alignItems: 'center',
         paddingTop: '0.75rem',
-        borderTop: '1px dashed #cbd5e1'
+        borderTop: '1px solid #23252a'
       }}>
-        <div style={{ fontSize: '0.8rem', color: '#475569' }}>
-          <strong>Tamper-Evident Timestamp Witness:</strong> Periodic batch root hash anchored to Polygon Amoy.
+        <div style={{ fontSize: '12px', color: '#8a8f98' }}>
+          Tamper-Evident Batch Root Hash Anchoring
         </div>
 
         <button
           onClick={onAnchorBatch}
           style={{
-            padding: '6px 14px',
-            backgroundColor: '#4f46e5',
+            padding: '5px 12px',
+            backgroundColor: '#5e6ad2',
             color: '#ffffff',
             border: 'none',
             borderRadius: '6px',
-            fontSize: '0.8rem',
-            fontWeight: '600',
+            fontSize: '13px',
+            fontWeight: '500',
             cursor: 'pointer'
           }}
         >
-          Anchor Batch & Verify on Polygon
+          Anchor Batch
         </button>
       </div>
 
@@ -119,23 +118,18 @@ const ReconciliationView = React.memo(function ReconciliationView({ reconciliati
         <div style={{
           marginTop: '0.75rem',
           padding: '0.75rem',
-          backgroundColor: '#f8fafc',
-          borderRadius: '6px',
-          border: '1px solid #e2e8f0',
-          fontSize: '0.8rem'
+          backgroundColor: '#0f1011',
+          borderRadius: '8px',
+          border: '1px solid #23252a',
+          fontSize: '12px',
+          fontFamily: 'monospace'
         }}>
-          <div><strong>Batch Root Hash:</strong> <code style={{ fontSize: '0.75rem' }}>{anchorResult.root_hash}</code></div>
-          <div style={{ marginTop: '0.25rem' }}>
-            <strong>Polygon Amoy Explorer: </strong>
-            <a
-              href={anchorResult.explorer_url}
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{ color: '#2563eb', fontWeight: '600', textDecoration: 'underline' }}
-            >
-              Verify Tx {anchorResult.tx_hash ? anchorResult.tx_hash.slice(0, 14) + '...' : ''} 🔗
-            </a>
-          </div>
+          <div>Root Hash: {anchorResult.root_hash}</div>
+          {anchorResult.explorer_url && (
+            <div style={{ marginTop: '0.25rem' }}>
+              Explorer: <a href={anchorResult.explorer_url} target="_blank" rel="noopener noreferrer" style={{ color: '#5e6ad2' }}>{anchorResult.tx_hash}</a>
+            </div>
+          )}
         </div>
       )}
     </div>

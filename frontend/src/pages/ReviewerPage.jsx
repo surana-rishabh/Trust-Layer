@@ -27,7 +27,7 @@ export default function ReviewerPage() {
     try {
       setResolvingId(flagId);
       await resolveDispute(flagId, decision, notes || 'Verified property manager documentation.');
-      alert('Dispute resolved! Resolution appended as new event to tamper-evident log.');
+      alert('Dispute resolved! Resolution appended to ledger.');
       await loadFlags();
     } catch (err) {
       alert('Failed to resolve dispute: ' + err.message);
@@ -36,27 +36,52 @@ export default function ReviewerPage() {
     }
   };
 
-  if (loading) return <div style={{ padding: '2rem' }}>Loading Reviewer Dashboard...</div>;
+  if (loading) {
+    return (
+      <div style={{ padding: '3rem', textAlign: 'center', color: '#8a8f98', backgroundColor: '#0f1011', borderRadius: '12px', border: '1px solid #23252a' }}>
+        Loading reviewer console...
+      </div>
+    );
+  }
 
   return (
-    <div style={{ maxWidth: '900px', margin: '0 auto', padding: '1.5rem', fontFamily: 'system-ui, sans-serif' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
+    <div style={{ color: '#f7f8f8', fontFamily: 'Inter, sans-serif' }}>
+      <div style={{
+        backgroundColor: '#0f1011',
+        borderRadius: '16px',
+        border: '1px solid #23252a',
+        padding: '2rem',
+        marginBottom: '1.5rem',
+        display: 'flex',
+        justify: 'space-between',
+        alignItems: 'center'
+      }}>
         <div>
-          <h2 style={{ margin: 0, color: '#0f172a' }}>Reviewer Resolution Dashboard</h2>
-          <p style={{ margin: '0.25rem 0 0', fontSize: '0.9rem', color: '#64748b' }}>
-            Story A Step 4: Inspect evidence and resolve open reconciliation flags
+          <h2 style={{ margin: '0 0 0.5rem 0', fontSize: '24px', fontWeight: '600', letterSpacing: '-0.4px', color: '#f7f8f8' }}>
+            Reviewer Resolution Console
+          </h2>
+          <p style={{ margin: 0, fontSize: '14px', color: '#8a8f98' }}>
+            Inspect flagged evidence and commit authoritative audit decisions.
           </p>
         </div>
         <button
           onClick={loadFlags}
-          style={{ padding: '6px 12px', fontSize: '0.85rem', borderRadius: '6px', border: '1px solid #cbd5e1', cursor: 'pointer' }}
+          style={{
+            padding: '6px 12px',
+            fontSize: '13px',
+            borderRadius: '6px',
+            border: '1px solid #23252a',
+            backgroundColor: '#141516',
+            color: '#d0d6e0',
+            cursor: 'pointer'
+          }}
         >
-          🔄 Refresh Flags
+          Refresh Flags
         </button>
       </div>
 
       {flags.length === 0 ? (
-        <div style={{ padding: '2rem', textAlign: 'center', backgroundColor: '#ffffff', borderRadius: '12px', border: '1px solid #e2e8f0', color: '#64748b' }}>
+        <div style={{ padding: '3rem', textAlign: 'center', backgroundColor: '#0f1011', borderRadius: '16px', border: '1px solid #23252a', color: '#8a8f98' }}>
           ✓ No open reconciliation flags requiring review.
         </div>
       ) : (
@@ -65,84 +90,71 @@ export default function ReviewerPage() {
             const details = flag.details || {};
             return (
               <div key={flag.id} style={{
-                padding: '1.25rem',
-                backgroundColor: '#ffffff',
-                borderRadius: '12px',
-                border: '1px solid #e2e8f0',
-                boxShadow: '0 1px 3px rgba(0,0,0,0.05)'
+                padding: '1.5rem',
+                backgroundColor: '#0f1011',
+                borderRadius: '16px',
+                border: '1px solid #23252a'
               }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.75rem' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1rem' }}>
                   <div>
-                    <span style={{ padding: '2px 8px', borderRadius: '12px', fontSize: '0.75rem', fontWeight: '700', backgroundColor: '#fef3c7', color: '#92400e' }}>
+                    <span style={{ padding: '2px 8px', borderRadius: '9999px', fontSize: '12px', fontWeight: '500', backgroundColor: 'rgba(234, 179, 8, 0.1)', color: '#facc15' }}>
                       {flag.flag_type}
                     </span>
-                    <h3 style={{ margin: '0.4rem 0 0', fontSize: '1.05rem', color: '#0f172a' }}>
-                      Target ID: {flag.booking_id}
+                    <h3 style={{ margin: '0.5rem 0 0', fontSize: '18px', fontWeight: '600', color: '#f7f8f8' }}>
+                      Target: {flag.booking_id}
                     </h3>
                   </div>
-                  <span style={{ fontSize: '0.8rem', color: '#94a3b8' }}>
-                    Flag ID #{flag.id}
+                  <span style={{ fontSize: '12px', color: '#8a8f98', fontFamily: 'monospace' }}>
+                    FLAG #{flag.id}
                   </span>
                 </div>
 
                 <div style={{
-                  padding: '0.75rem',
-                  backgroundColor: '#f8fafc',
-                  borderRadius: '6px',
-                  fontSize: '0.85rem',
-                  color: '#334155',
+                  padding: '1rem',
+                  backgroundColor: '#141516',
+                  borderRadius: '8px',
+                  border: '1px solid #23252a',
+                  fontSize: '13px',
+                  color: '#d0d6e0',
                   marginBottom: '1rem'
                 }}>
-                  <div><strong>Status Label:</strong> {details.status_label || 'Additional verification required'}</div>
-                  <div style={{ marginTop: '0.25rem' }}><strong>Details:</strong> {details.message || JSON.stringify(details)}</div>
-                </div>
-
-                <div style={{ marginBottom: '1rem' }}>
-                  <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: '600', color: '#475569', marginBottom: '0.25rem' }}>
-                    Reviewer Notes / Evidence Verification
-                  </label>
-                  <input
-                    type="text"
-                    value={notes}
-                    onChange={(e) => setNotes(e.target.value)}
-                    placeholder="Verified authorization documentation from host."
-                    style={{ width: '100%', padding: '6px 10px', borderRadius: '6px', border: '1px solid #cbd5e1', fontSize: '0.85rem' }}
-                  />
+                  <div><strong>Status:</strong> {details.status_label || 'Additional verification required'}</div>
+                  <div style={{ marginTop: '0.4rem', color: '#8a8f98' }}>{details.message || JSON.stringify(details)}</div>
                 </div>
 
                 <div style={{ display: 'flex', gap: '0.75rem' }}>
                   <button
-                    onClick={() => handleResolve(flag.id, 'RESOLVED_AUTHORIZED_MANAGER')}
+                    onClick={() => handleResolve(flag.id, 'APPROVED')}
                     disabled={resolvingId === flag.id}
                     style={{
-                      padding: '8px 16px',
-                      backgroundColor: '#16a34a',
+                      padding: '6px 14px',
+                      backgroundColor: '#27a644',
                       color: '#ffffff',
                       border: 'none',
                       borderRadius: '6px',
-                      fontWeight: '600',
-                      fontSize: '0.85rem',
+                      fontSize: '13px',
+                      fontWeight: '500',
                       cursor: 'pointer'
                     }}
                   >
-                    ✓ Resolve: Authorized Property Manager
+                    Approve Listing
                   </button>
 
                   <button
-                    onClick={() => handleResolve(flag.id, 'RESOLVED_ADDITIONAL_DOCS_VERIFIED')}
+                    onClick={() => handleResolve(flag.id, 'REJECTED')}
                     disabled={resolvingId === flag.id}
                     style={{
-                      padding: '8px 16px',
-                      backgroundColor: '#2563eb',
-                      color: '#ffffff',
-                      border: 'none',
+                      padding: '6px 14px',
+                      backgroundColor: '#141516',
+                      color: '#f87171',
+                      border: '1px solid #23252a',
                       borderRadius: '6px',
-                      fontWeight: '600',
-                      fontSize: '0.85rem',
+                      fontSize: '13px',
+                      fontWeight: '500',
                       cursor: 'pointer'
                     }}
                   >
-                    ✓ Resolve: Additional Docs Verified
+                    Reject Listing
                   </button>
                 </div>
               </div>
